@@ -1,0 +1,34 @@
+resource "aws_instance" "web" {
+  ami                         = "ami-04a81a99f5ec58529"
+  instance_type               = "t2.micro"
+  associate_public_ip_address = "true"
+  key_name                    = "AllTraffic"
+  vpc_security_group_ids      = [aws_security_group.webapp_sg.id]
+  subnet_id                   = aws_subnet.pubsubnet1.id
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("./AllTraffic.pem")
+    host        = self.public_ip
+  }
+
+  provisioner "file" {
+    source      = "./woody.sh"
+    destination = "/home/ubuntu/woody.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /home/ubuntu/woody.sh",
+      "sudo sh /home/ubuntu/woody.sh",
+
+
+    ]
+
+  }
+
+
+  tags = {
+    Name = "woody_web_instance"
+  }
+}
