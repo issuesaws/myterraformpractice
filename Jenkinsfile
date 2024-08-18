@@ -52,6 +52,28 @@ pipeline {
                 }
             }
         }
+        stage('Confirmación de accion') {
+            steps {
+                script {
+                    def userInput = input(id: 'confirm', message: params.ACCION + '?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
+                }
+            }
+        }
+        stage('Terraform apply or destroy ----------------') {
+            steps {
+               sh 'echo "comienza"'
+            script{  
+                if (params.ACCION == "destroy"){
+                         sh 'echo "llego" + params.ACCION'   
+                         sh 'terraform destroy -auto-approve'
+                } else {
+                         sh ' echo  "llego" + params.ACCION'                 
+                         sh 'terraform apply -refresh=true -auto-approve'  
+                }  // if
+
+            }
+            } //steps
+        }
         // stage('Upload State to S3') {
         //     steps {
         //         script {
