@@ -4,11 +4,11 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
     }
     stages {
-        stage('Checkout Code') {
-            steps {
-                git url : 'https://github.com/issuesaws/myterraformpractice.git'
-            }
-        }
+        //  stage('Checkout Code') {
+        //     steps {
+        //         git url : 'https://github.com/issuesaws/myterraformpractice.git'
+        //     }
+        // }
         stage('Terraform Init') {
             steps {
                 script {
@@ -52,9 +52,9 @@ pipeline {
         //     }
         // }
     }
-    //post {
-      //  always {
-        //    cleanWs()
-        //}
-    //}
+    // post {
+    //     always {
+    //         cleanWs()
+    //     }
+    // }
 }
